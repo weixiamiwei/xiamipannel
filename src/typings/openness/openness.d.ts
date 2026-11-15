@@ -8,5 +8,6 @@ declare namespace Openness.open {
     interface LoginVcodeResponse{
         loginCaptcha: boolean
         register:LoginConfigRegister
+        freeLogin: boolean
     }
 }

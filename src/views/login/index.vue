@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { NButton, NCard, NForm, NFormItem, NGradientText, NInput, NSelect, useMessage } from 'naive-ui'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { login } from '@/api'
+import { getLoginConfig } from '@/api/openness'
 import { useAppStore, useAuthStore } from '@/store'
 import { SvgIcon } from '@/components/common'
 import { router } from '@/router'
@@ -54,6 +55,21 @@ function handleSubmit() {
   // 点击登录按钮触发
   loginPost()
 }
+
+// 免登录模式：后端 loginConfig 返回 freeLogin=true 时自动登录
+onMounted(async () => {
+  try {
+    const res = await getLoginConfig<{ loginCaptcha: boolean, freeLogin: boolean }>()
+    if (res.code === 0 && res.data?.freeLogin) {
+      form.value.username = 'free'
+      form.value.password = 'free'
+      loginPost()
+    }
+  }
+  catch (error) {
+    console.log(error)
+  }
+})
 
 function handleChangeLanuage(value: Language) {
   languageValue.value = value

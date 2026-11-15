@@ -27,6 +27,7 @@ COPY ./structs ./structs
 RUN apk add --no-cache bash curl gcc git musl-dev
 
 RUN go env -w GO111MODULE=on \
+    && go env -w GOPROXY=https://goproxy.cn,direct \
     && go build -o ange-panel --ldflags="-X sun-panel/global.RUNCODE=release -X sun-panel/global.ISDOCKER=docker" ./main.go
 
 

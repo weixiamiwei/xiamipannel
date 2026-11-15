@@ -10,6 +10,16 @@ import (
 
 func LoginInterceptor(c *gin.Context) {
 
+	// 免登录模式：直接以第一个启用用户（优先管理员）身份放行
+	if global.FREE_LOGIN {
+		if info, err := (&models.User{}).GetFirstActiveUser(); err == nil && info.ID != 0 {
+			info.Password = ""
+			c.Set("userInfo", info)
+			return
+		}
+		// 未找到用户则退回正常鉴权流程
+	}
+
 	// 继续执行后续的操作，再回来
 	// c.Next()
 

@@ -27,6 +27,16 @@ func (m *User) GetUserInfoByUid(uid uint) (User, error) {
 	return mUser, err
 }
 
+// 获取第一个启用状态的用户（优先管理员），免登录模式使用
+func (m *User) GetFirstActiveUser() (User, error) {
+	mUser := User{}
+	err := Db.Where("status=? AND role=?", 1, 1).Order("id ASC").First(&mUser).Error
+	if err != nil {
+		err = Db.Where("status=?", 1).Order("id ASC").First(&mUser).Error
+	}
+	return mUser, err
+}
+
 // 根据用户名和密码查询用户
 func (m *User) GetUserInfoByUsernameAndPassword(username, password string) (User, error) {
 	userInfo := User{}

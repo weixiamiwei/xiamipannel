@@ -54,7 +54,14 @@ func (l LoginApi) Login(c *gin.Context) {
 	)
 	bToken := ""
 	param.Username = strings.TrimSpace(param.Username)
-	if info, err = mUser.GetUserInfoByUsernameAndPassword(param.Username, cmn.PasswordEncryption(param.Password)); err != nil {
+
+	// 免登录模式：忽略提交的账号密码，直接以第一个启用用户（优先管理员）身份登录
+	if global.FREE_LOGIN {
+		if info, err = mUser.GetFirstActiveUser(); err != nil || info.ID == 0 {
+			apiReturn.Error(c, "free login enabled but no active user found")
+			return
+		}
+	} else if info, err = mUser.GetUserInfoByUsernameAndPassword(param.Username, cmn.PasswordEncryption(param.Password)); err != nil {
 		// 未找到记录 账号或密码错误
 		if err == gorm.ErrRecordNotFound {
 			apiReturn.ErrorByCode(c, 1003)

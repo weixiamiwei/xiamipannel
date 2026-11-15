@@ -14,6 +14,16 @@ import (
 // [有token将自动登录，无token/过期将使用公开账号，不可以与LoginInterceptor一起使用]
 func PublicModeInterceptor(c *gin.Context) {
 
+	// 免登录模式：直接以第一个启用用户（优先管理员）身份放行，不进入访客模式
+	if global.FREE_LOGIN {
+		if info, err := (&models.User{}).GetFirstActiveUser(); err == nil && info.ID != 0 {
+			info.Password = ""
+			c.Set("userInfo", info)
+			return
+		}
+		// 未找到用户则退回正常流程
+	}
+
 	// 获得token
 	cToken := c.GetHeader("token")
 	token := ""
