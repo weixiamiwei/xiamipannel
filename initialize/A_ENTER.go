@@ -184,15 +184,17 @@ func CommandRun() {
 }
 
 func Logo() {
-	fmt.Println("     ____            ___                __")
-	fmt.Println("    / __/_ _____    / _ \\___ ____  ___ / /")
-	fmt.Println("   _\\ \\/ // / _ \\  / ___/ _ `/ _ \\/ -_) / ")
-	fmt.Println("  /___/\\_,_/_//_/ /_/   \\_,_/_//_/\\__/_/  ")
+	fmt.Println("  _  _  ___ _____  _   ___ ")
+	fmt.Println(" | || |/ _ \\_   _|/_\\ | _ \\")
+	fmt.Println(" | __ | (_) || |/ _ \\|   /")
+	fmt.Println(" |_||_|\\___/ |_/_/ \\_\\_|_\\")
 	fmt.Println("")
+	fmt.Println("        xiami-panel")
 
 	versionInfo := cmn.GetSysVersionInfo()
 	fmt.Println("Version:", versionInfo.Version)
 	fmt.Println("Welcome to the XiamiPannel.")
-	fmt.Println("Project address:", "https://github.com/liandu2024/AnGe-Panel")
+	fmt.Println("Project address:", "https://github.com/weixiamiwei/xiamipannel")
+	fmt.Println("Based on AnGe-Panel / Sun-Panel:", "https://github.com/liandu2024/AnGe-Panel")
 
 }
