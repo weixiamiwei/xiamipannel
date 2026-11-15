@@ -15,3 +15,7 @@
 "*.sass"   eol=lf
 "*.styl"   eol=lf
 "*.md"     eol=lf
+"*.sh"     eol=lf
+"*.py"     eol=lf
+"*.go"     eol=lf
+Dockerfile eol=lf
