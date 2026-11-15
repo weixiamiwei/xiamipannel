@@ -1,108 +1,60 @@
-[[ 简体中文 ]](https://github.com/liandu2024/AnGe-Panel/blob/main/README.md) |
-[[ English ]](https://github.com/liandu2024/AnGe-Panel/blob/main/README_EN.md)
+# XiamiPannel
 
-<div align=center>
+个人浏览器导航面板（自用魔改版）。基于 [AnGe-Panel](https://github.com/liandu2024/AnGe-Panel) 二次修改，核心改动：**自建使用无需强制密码，打开即用**。
 
-<img src="./doc/images/main-preview.jpg" width="100%" />
+## ✨ 这版改了什么
 
-# AnGe-Panel
+| 改动 | 说明 |
+|---|---|
+| 🔓 免登录模式 | 设置环境变量 `ANGE_FREE_LOGIN=true` 后，打开面板直接进入，无需输入账号密码 |
+| 🔧 开关式设计 | 不删原登录功能：不设该环境变量时，行为与 AnGe-Panel 完全一致，可正常登录管理 |
+| 🚀 构建优化 | Dockerfile 启用 GOPROXY 国内代理，CI 自动构建并发布 GHCR 镜像 |
+| 🐛 修复 | 统一 shell 脚本 LF 换行，修复 Windows 环境构建出的容器 entrypoint 无法执行的问题 |
 
-[![Github](https://img.shields.io/badge/Github-123456?logo=github&labelColor=242424)](https://github.com/liandu2024/AnGe-Panel)
-[![docker](https://img.shields.io/badge/docker-123456?logo=docker&logoColor=fff&labelColor=1c7aed)](https://github.com/liandu2024/AnGe-Panel/pkgs/container/ange-panel) 
-[![Telegram](https://img.shields.io/badge/Telegram-123456?logo=telegram&labelColor=229ED9)](https://t.me/angeworld2024)
-<br>
+### 免登录实现方式（安全说明）
 
-</div>
+- 后端登录接口忽略提交的账密，自动以**第一个启用用户（优先管理员）**身份签发 token
+- 所有受保护接口自动放行为管理员身份，面板内编辑、管理功能均可正常使用
+- ⚠️ **仅建议在可信局域网内使用**（家庭 NAS 场景）。免登录模式下任何能访问该地址的人都有管理员权限，请勿直接暴露到公网
+- 如需恢复密码保护：去掉 `ANGE_FREE_LOGIN` 环境变量重启容器即可
 
-A perfect website navigation + webpage bookmarks panel.
+## 🐳 部署
 
-完美的网站导航 + 网页收藏夹。
-
----
-
-## 主要功能
-
-### 1) 左侧分组目录条（快速定位）
-![](./doc/images/sidebar-nav.jpg)
-
-- 页面左侧新增"分组目录条"，点击圆点可 **一键跳转** 到对应分组。
-- 分组多的时候，不用一直往下滑找。
-
-### 2) 网站 + 网页 两种收藏模式
-- **网站**：适合收藏「一个站点」和它的入口（比如 NAS、博客、后台管理）。
-- **网页**：适合收藏「一篇文章 / 一个页面」的链接（比如知乎文章、头条链接、教程页面）。
-- 你可以在"网站 / 网页"之间切换，搜索条件也会保持，不会丢。
-
-### 3) 网页收藏更好用
-![](./doc/images/webbookmarks.jpg)
-
-- 网页列表支持：一键置顶/取消置顶、快速编辑、快速删除。
-- 置顶/新建/修改/删除 **不会整页刷新**，界面不会"闪一下/跳一下"。
-
-### 4) 图标 / 壁纸 分开管理，支持复用
-- 上传图片时区分"图标"和"壁纸"，避免混在一起不好找。
-- 已上传的图标/壁纸可以在历史里 **重复选择复用**，不需要每次重新上传。
-
-### 5) 一些贴心的体验优化
-- 链接去重校验（避免重复收藏同一 URL）。
-- 列表标题自动省略、需要时再悬停看全名。
-- 移动端体验优化（更紧凑、更清爽）。
-
-![](./doc/images/mobile-1.jpg)
-![](./doc/images/mobile-2.jpg)
-
-## 🐳 Docker 部署
-
-在支持 Docker 设备上执行以下指令：
-
-```bash
-docker run -d --name ange-panel --restart=unless-stopped \
-  -p 3005:3005 \
-  -v /root/ange-data:/data \
-  ghcr.io/liandu2024/ange-panel:latest
+```yaml
+services:
+  xiamipannel:
+    image: ghcr.io/weixiamiwei/xiamipannel:dev
+    container_name: xiamipannel
+    environment:
+      - ANGE_FREE_LOGIN=true   # 免登录开关，去掉即恢复密码登录
+    volumes:
+      - ./data:/data
+    ports:
+      - "3003:3002"            # 容器内部端口取决于 data/conf/conf.ini 的 http_port
+    restart: unless-stopped
 ```
 
-> 说明：Docker 镜像只使用 `latest`。`/root/ange-data` 会持久化 `conf`、`database`、`uploads`、`runtime`，升级时保留这个目录即可无损升级。
-
-升级：
-
 ```bash
-docker pull ghcr.io/liandu2024/ange-panel:latest
-docker stop ange-panel && docker rm ange-panel
-docker run -d --name ange-panel --restart=unless-stopped \
-  -p 3005:3005 \
-  -v /root/ange-data:/data \
-  ghcr.io/liandu2024/ange-panel:latest
+docker compose up -d
 ```
 
-## 🔐 首次登录
+数据持久化在 `./data`（conf、database、uploads、runtime），升级镜像时保留该目录即可无损升级。
 
-登录网址：http://[部署设备的IP]:3005
+支持环境：`linux/amd64`、`linux/arm64`。
 
-- **默认管理员账号**：`admin`
-- **默认管理员密码**：`admin`
+## 📦 从 AnGe-Panel / Sun-Panel 迁移
 
-首次启动时会自动创建示例分组和示例网站/网页链接，方便快速体验功能。
+直接把原面板的数据目录拷贝为 `./data` 即可，配置、收藏、图标、壁纸全部保留（本版即从 AnGe-Panel 数据原样迁移而来）。
 
-> ⚠️ 首次登录后请尽快修改密码！
+## 🙏 致谢与版权
 
-## 📋 文档
+本项目为二次（乃至三次）开发的个人自用版本，感谢上游项目：
 
-- [中文文档](https://github.com/liandu2024/AnGe-Panel/blob/main/README.md)
-- [English Documentation](https://github.com/liandu2024/AnGe-Panel/blob/main/README_EN.md)
+- [Sun-Panel](https://github.com/hslr-s/sun-panel) —— 原始项目，作者 **红烧猎人（hslr-s）**，MIT License
+- [AnGe-Panel](https://github.com/liandu2024/AnGe-Panel) —— 基于 Sun-Panel v1.3.0 的增强版，作者 **liandu2024**
 
-## 🏖️ 其他
+## 📄 License
 
-- [Telegram 群](https://t.me/angeworld2024)
-- [安格超市](https://blog.angeworld.cc/market)
-- **芝麻开门**: [按需付费 AI 接口，官方 1/10 价格](https://ai.opendoor.sbs)
-- **超级门户**: [订阅付费 AI 接口，量大管饱的订阅制](https://ai.superdoor.top)
----
+[MIT](./LICENSE)（继承自 Sun-Panel 原始许可证，版权声明保留）。本仓库的修改部分同样以 MIT 发布。
 
-## ❤️ 感谢
-
-- 本项目基于 [Sun-Panel v1.3.0 开源版](https://github.com/hslr-s/sun-panel) 项目做的二次开发，感谢原作者辛勤付出！
-
----
-
-[![Star History Chart](https://api.star-history.com/svg?repos=liandu2024/AnGe-Panel&type=Date)](https://star-history.com/#liandu2024/AnGe-Panel&Date)
+> Sun-Panel 优秀得多，如果需要正式的密码保护与多用户支持，建议直接使用上游项目。
