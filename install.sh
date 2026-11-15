@@ -2,7 +2,7 @@
 set -euo pipefail
 
 REPO="liandu2024/AnGe-Panel"
-APP_NAME="ange-panel"
+APP_NAME="xiami-panel"
 INSTALL_DIR="/opt/${APP_NAME}"
 SERVICE_FILE="/etc/systemd/system/${APP_NAME}.service"
 
@@ -61,7 +61,7 @@ sudo chown -R "$APP_NAME":"$APP_NAME" "$INSTALL_DIR"
 echo "[5/6] Installing systemd service..."
 sudo tee "$SERVICE_FILE" >/dev/null <<EOF
 [Unit]
-Description=AnGe-Panel
+Description=XiamiPannel
 After=network-online.target
 Wants=network-online.target
 

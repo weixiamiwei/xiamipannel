@@ -192,7 +192,7 @@ func Logo() {
 
 	versionInfo := cmn.GetSysVersionInfo()
 	fmt.Println("Version:", versionInfo.Version)
-	fmt.Println("Welcome to the AnGe-Panel.")
+	fmt.Println("Welcome to the XiamiPannel.")
 	fmt.Println("Project address:", "https://github.com/liandu2024/AnGe-Panel")
 
 }

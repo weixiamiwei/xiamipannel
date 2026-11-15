@@ -1,7 +1,7 @@
 services:
-  ange-panel:
-    image: ghcr.io/liandu2024/ange-panel:v2.04
-    container_name: ange-panel
+  xiami-panel:
+    image: ghcr.io/weixiamiwei/xiamipannel:dev
+    container_name: xiami-panel
     volumes:
       - ./data:/data
     ports:

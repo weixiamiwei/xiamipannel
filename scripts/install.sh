@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP_NAME="ange-panel"
+APP_NAME="xiami-panel"
 REPO="liandu2024/AnGe-Panel"
 INSTALL_DIR="/opt/${APP_NAME}"
 BIN_NAME="${APP_NAME}"
@@ -11,7 +11,7 @@ CHANNEL="release"  # reserved
 
 usage() {
   cat <<'USAGE'
-AnGe-Panel one-line installer (systemd)
+XiamiPannel one-line installer (systemd)
 
 Usage:
   curl -fsSL https://raw.githubusercontent.com/liandu2024/AnGe-Panel/main/scripts/install.sh | sudo bash -s -- [options]
@@ -19,11 +19,11 @@ Usage:
 Options:
   --version vX.Y.Z   Install specific version (default: latest release)
   --port 3003        Set http port in conf/conf.ini (default: keep package default)
-  --dir /opt/ange-panel  Install directory (default: /opt/ange-panel)
+  --dir /opt/xiami-panel  Install directory (default: /opt/xiami-panel)
   --help             Show this help
 
 Notes:
-- This script installs to /opt and creates a systemd service: ange-panel.service
+- This script installs to /opt and creates a systemd service: xiami-panel.service
 - If you re-run it, it will overwrite files in the install dir.
 USAGE
 }
@@ -157,7 +157,7 @@ main() {
   # systemd service
   cat > "/etc/systemd/system/${APP_NAME}.service" <<SERVICE
 [Unit]
-Description=AnGe-Panel
+Description=XiamiPannel
 After=network.target
 
 [Service]

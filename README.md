@@ -1,13 +1,13 @@
 # XiamiPannel
 
-个人浏览器导航面板（自用魔改版）。基于 [AnGe-Panel](https://github.com/liandu2024/AnGe-Panel) 二次修改，核心改动：**自建使用无需强制密码，打开即用**。
+个人浏览器导航面板（自用魔改版）。基于 [XiamiPannel](https://github.com/liandu2024/AnGe-Panel) 二次修改，核心改动：**自建使用无需强制密码，打开即用**。
 
 ## ✨ 这版改了什么
 
 | 改动 | 说明 |
 |---|---|
 | 🔓 免登录模式 | 设置环境变量 `ANGE_FREE_LOGIN=true` 后，打开面板直接进入，无需输入账号密码 |
-| 🔧 开关式设计 | 不删原登录功能：不设该环境变量时，行为与 AnGe-Panel 完全一致，可正常登录管理 |
+| 🔧 开关式设计 | 不删原登录功能：不设该环境变量时，行为与 XiamiPannel 完全一致，可正常登录管理 |
 | 🚀 构建优化 | Dockerfile 启用 GOPROXY 国内代理，CI 自动构建并发布 GHCR 镜像 |
 | 🐛 修复 | 统一 shell 脚本 LF 换行，修复 Windows 环境构建出的容器 entrypoint 无法执行的问题 |
 
@@ -42,16 +42,16 @@ docker compose up -d
 
 支持环境：`linux/amd64`、`linux/arm64`。
 
-## 📦 从 AnGe-Panel / Sun-Panel 迁移
+## 📦 从 XiamiPannel / Sun-Panel 迁移
 
-直接把原面板的数据目录拷贝为 `./data` 即可，配置、收藏、图标、壁纸全部保留（本版即从 AnGe-Panel 数据原样迁移而来）。
+直接把原面板的数据目录拷贝为 `./data` 即可，配置、收藏、图标、壁纸全部保留（本版即从 XiamiPannel 数据原样迁移而来）。
 
 ## 🙏 致谢与版权
 
 本项目为二次（乃至三次）开发的个人自用版本，感谢上游项目：
 
 - [Sun-Panel](https://github.com/hslr-s/sun-panel) —— 原始项目，作者 **红烧猎人（hslr-s）**，MIT License
-- [AnGe-Panel](https://github.com/liandu2024/AnGe-Panel) —— 基于 Sun-Panel v1.3.0 的增强版，作者 **liandu2024**
+- [XiamiPannel](https://github.com/liandu2024/AnGe-Panel) —— 基于 Sun-Panel v1.3.0 的增强版，作者 **liandu2024**
 
 ## 📄 License
 

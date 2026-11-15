@@ -1,11 +1,11 @@
 {
-  "name": "ange-panel",
+  "name": "xiami-panel",
   "version": "2.0.4",
   "private": false,
-  "description": "AnGe-Panel Web",
+  "description": "XiamiPannel Web",
   "author": "BraisedHunter <95302870@qq.com>",
   "keywords": [
-    "AnGe-Panel",
+    "XiamiPannel",
     "vue"
   ],
   "scripts": {

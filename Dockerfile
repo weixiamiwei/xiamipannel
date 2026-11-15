@@ -28,7 +28,7 @@ RUN apk add --no-cache bash curl gcc git musl-dev
 
 RUN go env -w GO111MODULE=on \
     && go env -w GOPROXY=https://goproxy.cn,direct \
-    && go build -o ange-panel --ldflags="-X sun-panel/global.RUNCODE=release -X sun-panel/global.ISDOCKER=docker" ./main.go
+    && go build -o xiami-panel --ldflags="-X sun-panel/global.RUNCODE=release -X sun-panel/global.ISDOCKER=docker" ./main.go
 
 
 # run_image
@@ -39,7 +39,7 @@ WORKDIR /app
 # Publish the current live web bundle from dist/ so Docker matches localhost:3005.
 COPY ./dist /app/web
 
-COPY --from=server_image /build/ange-panel /app/ange-panel
+COPY --from=server_image /build/xiami-panel /app/xiami-panel
 
 # Seed template (db + uploads + conf) shipped with image
 COPY ./seed /app/seed
@@ -53,12 +53,12 @@ COPY ./docker/entrypoint.sh /entrypoint.sh
 EXPOSE 3005
 
 RUN apk add --no-cache bash ca-certificates su-exec tzdata \
-    && chmod +x /app/ange-panel /entrypoint.sh \
-    && test -f /app/ange-panel \
-    && /app/ange-panel -config \
+    && chmod +x /app/xiami-panel /entrypoint.sh \
+    && test -f /app/xiami-panel \
+    && /app/xiami-panel -config \
     && mkdir -p /app/defaults \
     && rm -rf /app/defaults/conf \
     && mv /app/conf /app/defaults/conf
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["/app/ange-panel"]
+CMD ["/app/xiami-panel"]
